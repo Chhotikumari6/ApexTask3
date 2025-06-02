@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Interactive Website</title>
+    <link rel="stylesheet" href="Task3.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>Interactive Hub</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#carousel">Gallery</a></li>
+                <li><a href="#quiz">Quiz</a></li>
+                <li><a href="#weather">Weather</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Welcome to Interactive Hub</h2>
+            <p>Explore our image carousel, test your knowledge with our quiz, and check the weather!</p>
+        </div>
+    </section>
+
+    <!-- Image Carousel Section -->
+    <section id="carousel" class="carousel-section">
+        <div class="container">
+            <h2 class="section-title">Image Gallery</h2>
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="carousel-slide active">
+                        <img src="https://picsum.photos/800/400?random=1" alt="Nature 1">
+                        <div class="slide-content">
+                            <h3>Beautiful Landscape</h3>
+                            <p>Explore the beauty of nature</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://picsum.photos/800/400?random=2" alt="Nature 2">
+                        <div class="slide-content">
+                            <h3>Ocean Views</h3>
+                            <p>Peaceful ocean scenery</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://picsum.photos/800/400?random=3" alt="Nature 3">
+                        <div class="slide-content">
+                            <h3>Mountain Peaks</h3>
+                            <p>Majestic mountain landscapes</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://picsum.photos/800/400?random=4" alt="Nature 4">
+                        <div class="slide-content">
+                            <h3>Forest Path</h3>
+                            <p>Serene forest walkways</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn prev-btn">&lt;</button>
+                <button class="carousel-btn next-btn">&gt;</button>
+                <div class="carousel-indicators">
+                    <span class="indicator active" data-slide="0"></span>
+                    <span class="indicator" data-slide="1"></span>
+                    <span class="indicator" data-slide="2"></span>
+                    <span class="indicator" data-slide="3"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section id="quiz" class="quiz-section">
+        <div class="container">
+            <h2 class="section-title">Interactive Quiz</h2>
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h3 id="question-title">Question 1 of 5</h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                </div>
+                <div class="quiz-body">
+                    <h4 id="question-text">What is the capital of France?</h4>
+                    <div class="options">
+                        <button class="option-btn" data-option="0">London</button>
+                        <button class="option-btn" data-option="1">Berlin</button>
+                        <button class="option-btn" data-option="2">Paris</button>
+                        <button class="option-btn" data-option="3">Madrid</button>
+                    </div>
+                </div>
+                <div class="quiz-footer">
+                    <button id="next-question" class="btn-primary" disabled>Next Question</button>
+                </div>
+                <div class="quiz-results" id="quiz-results" style="display: none;">
+                    <h3>Quiz Complete!</h3>
+                    <p id="final-score">Your Score: 0/5</p>
+                    <button id="restart-quiz" class="btn-primary">Restart Quiz</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weather API Section -->
+    <section id="weather" class="weather-section">
+        <div class="container">
+            <h2 class="section-title">Weather Information</h2>
+            <div class="weather-container">
+                <div class="weather-search">
+                    <input type="text" id="city-input" placeholder="Enter city name...">
+                    <button id="search-weather" class="btn-primary">Get Weather</button>
+                </div>
+                <div class="weather-display" id="weather-display">
+                    <div class="weather-loading" id="weather-loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Loading weather data...</p>
+                    </div>
+                    <div class="weather-info" id="weather-info" style="display: none;">
+                        <div class="weather-main">
+                            <h3 id="city-name">City Name</h3>
+                            <div class="temperature">
+                                <span id="temperature">--°C</span>
+                            </div>
+                            <p id="weather-description">Description</p>
+                        </div>
+                        <div class="weather-details">
+                            <div class="detail-item">
+                                <span class="label">Feels like:</span>
+                                <span id="feels-like">--°C</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Humidity:</span>
+                                <span id="humidity">--%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="label">Wind Speed:</span>
+                                <span id="wind-speed">-- m/s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weather-error" id="weather-error" style="display: none;">
+                        <p>Unable to fetch weather data. Please try again.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Interactive Hub. Built with HTML, CSS, and JavaScript.</p>
+        </div>
+    </footer>
+
+    <script src="Task3.js"></script>
+</body>
+</html>
