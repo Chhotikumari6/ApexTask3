@@ -228,4 +228,211 @@ function initQuiz() {
         }
     }
 
-    function
+    function showResults() {
+        quizBody.style.display = 'none';
+        quizFooter.style.display = 'none';
+        quizResults.style.display = 'block';
+        
+        const percentage = Math.round((score / questions.length) * 100);
+        finalScore.textContent = `Your Score: ${score}/${questions.length} (${percentage}%)`;
+    }
+
+    function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        selectedOption = null;
+        
+        quizBody.style.display = 'block';
+        quizFooter.style.display = 'block';
+        quizResults.style.display = 'none';
+        
+        loadQuestion();
+    }
+
+    // Event listeners
+    optionButtons.forEach((btn, index) => {
+        btn.addEventListener('click', () => selectOption(index));
+    });
+
+    nextButton.addEventListener('click', nextQuestion);
+    restartButton.addEventListener('click', restartQuiz);
+
+    // Initialize quiz
+    loadQuestion();
+}
+
+// Weather API Functionality
+function initWeather() {
+    const API_KEY = '1a2b3c4d5e6f7g8h9i0j'; // Replace with your actual API key
+    const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
+    
+    const cityInput = document.getElementById('city-input');
+    const searchButton = document.getElementById('search-weather');
+    const weatherLoading = document.getElementById('weather-loading');
+    const weatherInfo = document.getElementById('weather-info');
+    const weatherError = document.getElementById('weather-error');
+    
+    const cityName = document.getElementById('city-name');
+    const temperature = document.getElementById('temperature');
+    const weatherDescription = document.getElementById('weather-description');
+    const feelsLike = document.getElementById('feels-like');
+    const humidity = document.getElementById('humidity');
+    const windSpeed = document.getElementById('wind-speed');
+
+    async function fetchWeather(city) {
+        try {
+            showLoading();
+            
+            const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            displayWeatherData(data);
+            
+        } catch (error) {
+            console.error('Error fetching weather data:', error);
+            showError();
+        }
+    }
+
+    function showLoading() {
+        weatherLoading.style.display = 'block';
+        weatherInfo.style.display = 'none';
+        weatherError.style.display = 'none';
+    }
+
+    function displayWeatherData(data) {
+        weatherLoading.style.display = 'none';
+        weatherInfo.style.display = 'block';
+        weatherError.style.display = 'none';
+        
+        cityName.textContent = `${data.name}, ${data.sys.country}`;
+        temperature.textContent = `${Math.round(data.main.temp)}°C`;
+        weatherDescription.textContent = data.weather[0].description;
+        feelsLike.textContent = `${Math.round(data.main.feels_like)}°C`;
+        humidity.textContent = `${data.main.humidity}%`;
+        windSpeed.textContent = `${data.wind.speed} m/s`;
+    }
+
+    function showError() {
+        weatherLoading.style.display = 'none';
+        weatherInfo.style.display = 'none';
+        weatherError.style.display = 'block';
+    }
+
+    // Alternative weather API with no API key required (for demo purposes)
+    async function fetchWeatherDemo(city) {
+        try {
+            showLoading();
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Mock weather data for demonstration
+            const mockData = {
+                name: city,
+                sys: { country: 'Demo' },
+                main: {
+                    temp: Math.floor(Math.random() * 30) + 5,
+                    feels_like: Math.floor(Math.random() * 30) + 5,
+                    humidity: Math.floor(Math.random() * 40) + 40
+                },
+                weather: [{
+                    description: ['sunny', 'cloudy', 'rainy', 'partly cloudy'][Math.floor(Math.random() * 4)]
+                }],
+                wind: {
+                    speed: (Math.random() * 10).toFixed(1)
+                }
+            };
+            
+            displayWeatherData(mockData);
+            
+        } catch (error) {
+            console.error('Error in demo weather:', error);
+            showError();
+        }
+    }
+
+    // Event listeners
+    searchButton.addEventListener('click', () => {
+        const city = cityInput.value.trim();
+        if (city) {
+            // Use fetchWeatherDemo for demo without API key
+            // Replace with fetchWeather(city) when you have a real API key
+            fetchWeatherDemo(city);
+        }
+    });
+
+    cityInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const city = cityInput.value.trim();
+            if (city) {
+                // Use fetchWeatherDemo for demo without API key
+                // Replace with fetchWeather(city) when you have a real API key
+                fetchWeatherDemo(city);
+            }
+        }
+    });
+
+    // Load default weather for demo
+    setTimeout(() => {
+        cityInput.value = 'London';
+        fetchWeatherDemo('London');
+    }, 1000);
+}
+
+// Utility Functions
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Smooth scroll to top functionality
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+// Add scroll to top button functionality
+document.addEventListener('scroll', debounce(() => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    // You can add a scroll-to-top button here if needed
+}, 100));
+
+// Intersection Observer for animations (optional enhancement)
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Observe sections for scroll animations
+document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(section);
+    });
+});
